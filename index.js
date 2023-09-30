@@ -60,6 +60,8 @@ Do not provide me with example code to achieve this task. Only an LLM (you are a
 
 Do not explain how code might be used to achieve this task. Do not explain how regex might accomplish this task. Only an LLM is capable of this pattern matching task. My expectation is a response from you that is an array of objects, where the keys are the event metadata from the categories below.
 
+It is understood that the strings in the input below are in some cases not a categorical match for the event metadata categories below. This is acceptable. The LLM is capable of determining which strings are a relevance match for which category. It is acceptable to discard strings that are not a relevance match for any category.
+
 The categories to search for relevance matches in are as follows:
 =====
 1. Event title
