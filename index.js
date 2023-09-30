@@ -54,11 +54,11 @@ const { setDefaultHighWaterMark } = require('stream');
           role: 'user',
           content: `You are a helpful LLM capable of accepting an array of strings and reordering them according to patterns only an LLM is capable of recognizing.
 
-Your goal is to take the javascript array input I will provide below and return a re-ordered array from most relevant to least relevant in priority order. The matching priority is the degree to which the array item is a match for any of the event categories in the example below.
+Your goal is to take the javascript array input I will provide, called the \`unorderedArray\` below and return a grouped array of objects. Each object should represent a single event, where it's keys are the event metadata associated with the categories below that are to be searched for. There should be no duplicate keys. Each object consists of no more than one of a given event metadata. When forming these groups, prioritize proximity (meaning, the closer two strings are in array position) in creating the event objects in the returned array of objects. In other words, the closer two strings are together, the higher the likelihood that they are two different event metadata items for the same event.
 
-Do not provide me with example code to achieve this task. Only an LLM like OpenAI is capable of reading the array of text strings and determining which string is a relevance match for which category can resolve this task. Javascript alone cannot resolve this query.
+Do not provide me with example code to achieve this task. Only an LLM (you are an LLM) is capable of reading the array of text strings and determining which string is a relevance match for which category can resolve this task. Javascript alone cannot resolve this query.
 
-Do not explain how code might be used to achieve this task. Only an LLM is capable of the pattern matching task. My expectation is an response from you that is an array of strings in the order of most relevant to least relevant.
+Do not explain how code might be used to achieve this task. Do not explain how regex might accomplish this task. Only an LLM is capable of this pattern matching task. My expectation is a response from you that is an array of objects, where the keys are the event metadata from the categories below.
 
 The categories to search for relevance matches in are as follows:
 =====
@@ -68,16 +68,25 @@ The categories to search for relevance matches in are as follows:
 4. Event URL
 5. Event image URL
 
-When you have prioritized the array, prefix each with the relevant category and return the array to me in the following format.
+Note that some keys may be missing, for example, in the example below, the event image URL is missing. This is acceptable. The event metadata keys are not guaranteed to be present in the input array of strings.
+
+Ane example of a successful output is as follows:
 
 Example:
 \`\`\`
-const orderedArray = [
-'Event title: Meetup at the park',
-'Event location: Espanola, NM 87532',
-'Event date: Sep 26, 5:30-7:30pm',
-'Event URL: http://example.com/events/12345',
-'Event image URL: http://example.com/img/12345.jpg',
+const orderedArray = [{
+  event_title: 'Meetup at the park',
+  event_location: 'Espanola, NM 87532',
+  event_date: 'Sep 26, 5:30-7:30pm',
+  event_url: 'http://example.com/events/12345',
+  event_image_url: 'http://example.com/img/12345.jpg'
+},
+{
+  event_title: 'Yoga at sunrise',
+  event_location: 'Espanola, NM 87532',
+  event_date: 'Oct 13, 6:30-7:30am',
+  event_url: 'http://example.com/events/98765',
+}]
 \`\`\`
 
 
