@@ -1,11 +1,12 @@
 require('dotenv').config();
 const fs = require('fs');
 const TurndownService = require('turndown');
+// const ZenRows = require('zenrows');
 
 const OpenAI = require('openai');
 const { setDefaultHighWaterMark } = require('stream');
 
-const client = new ZenRows(process.env.ZENROWS_API_KEY);
+// const client = new ZenRows(process.env.ZENROWS_API_KEY);
 
 (async () => {
   // Create an instance of OpenAI using your key
