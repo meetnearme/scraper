@@ -92,7 +92,7 @@ const unorderedArray = ${JSON.stringify(arrOfLines)}
 
     const chatCompletion = await openai.chat.completions.create(config);
     fs.writeFileSync(
-      `${process.cwd()}/scrapes/array-of-lines-${new Date().toISOString()}.html`,
+      `${process.cwd()}/scrapes/scrape-llm-${new Date().toISOString()}.html`,
       JSON.stringify(arrOfLines) +
         '\n\n\n========== openAI config ============\n\n\n\n' +
         JSON.stringify(config) +
