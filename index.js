@@ -5,22 +5,42 @@ const TurndownService = require('turndown');
 const OpenAI = require('openai');
 const { setDefaultHighWaterMark } = require('stream');
 
+const client = new ZenRows(process.env.ZENROWS_API_KEY);
+
 (async () => {
   // Create an instance of OpenAI using your key
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });
 
-  // const client = new ZenRows(process.env.ZENROWS_API_KEY);
-  //   const url = "https://www.rei.com/events/search?previousLocation=87501&cm_mmc=email_com_rm-_-StoreEvents_GeneralAwareness-_-092223-_-opo_mod4_cta&ev36=34175338&rmid=20230922_FEE_FeaturedEventsSeptember2&rrid=424901195&ev11=&mi_u=424901195&course.session.anyLocation=200.000000~35.713544~-105.840772;geo_r";
-  const doc = fs.readFileSync(
+  // zernrows parse fetch
+
+  // const url =
+  //   'https://www.rei.com/events/search?previousLocation=87501&cm_mmc=email_com_rm-_-StoreEvents_GeneralAwareness-_-092223-_-opo_mod4_cta&ev36=34175338&rmid=20230922_FEE_FeaturedEventsSeptember2&rrid=424901195&ev11=&mi_u=424901195&course.session.anyLocation=200.000000~35.713544~-105.840772;geo_r';
+
+  // try {
+  //   const { data } = await client.get(url, {
+  //     js_render: 'true',
+  //     wait: '2500',
+  //     // we might want html mode instead, for markdown parsing
+  //     // autoparse: 'true',
+  //   });
+  // } catch (error) {
+  //   console.error(error.message);
+  //   if (error.response) {
+  //     console.error(error.response.data);
+  //   }
+  // }
+
+  // read from the filesystem temporarily to avoid using zenrows credits
+  const data = fs.readFileSync(
     `${process.cwd()}/scrapes/scrape-2023-09-26T01:02:44.513Z.html`
   );
   const turndownService = new TurndownService();
   turndownService.keep(['body']);
   turndownService.remove(['script', 'style']);
   try {
-    const markdown = turndownService.turndown(doc.toString());
+    const markdown = turndownService.turndown(data.toString());
     const arrOfLines = markdown
       .replace(/\n\s*\n/g, '\n')
       ?.split('\n')
